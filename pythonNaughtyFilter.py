@@ -93,13 +93,15 @@ anywherebad = [("asshole", ["***hole", "@$$hole"]),
                "cunt",
                "dickhead"
                "fuck",
+               "niggar",
+               "nigger",
                "pussy",
                "shit"
                ]
 #these are the words that are only bad when they appear by themselves
 onlybylonesomebad = [("ass", ["@$$", "a--", "a**"]),
                      "cock",
-                     ("dick", ["d***", "8=>"]),
+                     ("dick", ["d***"]),
                      "dicks",
                      "prick" ]
 #here are the exceptions that are ignored should they show up somewhere
