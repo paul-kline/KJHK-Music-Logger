@@ -17,13 +17,13 @@ def handleBurst(serv):
         print("Connection closed!")
     
 ##let's set up some constants
-HOST = ''    #we are the host
-PORT = 55555    #arbitrary port not currently in use
+HOST = ''    #TODO change to itty bitty wideorbit only IP
+PORT = 55555    #Device Server output port
 ADDR = (HOST,PORT)    #we need a tuple for the address
-BUFSIZE = 4096    #reasonably sized buffer for data
+BUFSIZE = 8192    #this is probably much larger than neccessary. 
 
 ## now we create a new socket object (serv)
-## see the python docs for more information on the socket types/flags
+
 serv = socket( AF_INET,SOCK_STREAM)    
 
 ##bind our socket to the address
