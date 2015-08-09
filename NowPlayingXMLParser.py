@@ -28,7 +28,7 @@ def tryParseXML(str):
      print("nooooooo parse failure")
      return -1
 
-nonsongCategories = ["DON", "RTR", "EVR", "PRO", "PSA"]
+nonsongCategories = ["DON", "RTR", "EVR", "PRO", "PSA", "IDS"]
 def isSong(tree):
     #assumed successful tree parse.
     category = getCategory(tree)
