@@ -17,7 +17,8 @@ def handleBurst(serv):
         print("Connection closed!")
     
 ##let's set up some constants
-HOST = ''    #TODO change to itty bitty wideorbit only IP
+HOST = '' #empty because we are on localhost now
+          #using DS-LOGGER '192.168.1.4'    #TODO change to itty bitty wideorbit only IP
 PORT = 55555    #Device Server output port
 ADDR = (HOST,PORT)    #we need a tuple for the address
 BUFSIZE = 8192    #this is probably much larger than neccessary. 

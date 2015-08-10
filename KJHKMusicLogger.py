@@ -23,6 +23,7 @@ def handleDataBurst(str):
         handleLogSong(artist,album,song,isrot)
         
 def handleLogSong(artist,album,song,isrot):
+    #TODO logging to site..
     print("handleLogSong stub method.")
     print("Song: " + song )
     print("Album: " + album)
