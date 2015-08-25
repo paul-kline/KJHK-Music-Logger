@@ -43,12 +43,17 @@ def didAir(tree):
 # a copy of the song in non-rot category as well.
 # In other words, see if the DJ played a rotation song not from
 # the rotation category. Stupid DJs...
+def handleNone(x):
+    if x == None:
+        return "[NA]"
+    else:
+        return x 
 def isRot(tree):
     return getCategory(tree) == "ROT"
 def getSongData(tree):
-    song  = tree.find("title").text
-    album = tree.find("trivia").text
-    band  = tree.find("artist").text
+    song  = handleNone(tree.find("title").text)
+    album = handleNone(tree.find("trivia").text)
+    band  = handleNone(tree.find("artist").text)
     airtime = int(tree.find("air_time").text)
     duration = int(tree.find("duration").text)
     isrot = isRot(tree)
