@@ -19,6 +19,16 @@ def preparse(str):
     str = re.sub("<Sub-Genre\(s\)>(.*?)</Sub-Genre\(s\)>","",str)
     str = re.sub("<Recommended Tracks>(.*?)</Recommended Tracks>","",str)
     str = re.sub("<Track Number>(.*?)</Track Number>","",str)
+    str = re.sub("&", "&amp;",str)
+    #specifically replace instances of '<' and '>' that show up in titles.
+    #without doing this parsing the xml will fail.
+    str = re.sub("<artist>(.*?)>(.*?)</artist>","<artist>\\1&gt;\\2</artist>",str)
+    str = re.sub("<artist>(.*?)<(.*?)</artist>","<artist>\\1&lt;\\2</artist>",str)
+    str = re.sub("<trivia>(.*?)>(.*?)</trivia>","<trivia>\\1&gt;\\2</trivia>",str)
+    str = re.sub("<trivia>(.*?)<(.*?)</trivia>","<trivia>\\1&lt;\\2</trivia>",str)
+    str = re.sub("<title>(.*?)>(.*?)</title>","<title>\\1&gt;\\2</title>",str)
+    str = re.sub("<title>(.*?)<(.*?)</title>","<title>\\1&lt;\\2</title>",str)
+    
     return str
 def tryParseXML(str):
   try:
@@ -28,7 +38,7 @@ def tryParseXML(str):
      print("nooooooo parse failure")
      return -1
 
-nonsongCategories = ["DON", "RTR", "EVR", "PRO", "PSA", "IDS"]
+nonsongCategories = ["DON", "RTR", "EVR", "PRO", "PSA", "IDS", "VTK", "DIS"]
 def isSong(tree):
     #assumed successful tree parse.
     category = getCategory(tree)

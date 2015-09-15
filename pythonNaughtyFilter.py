@@ -91,7 +91,7 @@ anywherebad = [("asshole", ["***hole", "@$$hole"]),
                "clit",
                "cocksucker",
                "cunt",
-               "dickhead"
+               "dickhead",
                "fuck",
                "niggar",
                "nigger",

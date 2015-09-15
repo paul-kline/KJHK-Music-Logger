@@ -51,8 +51,9 @@ def handleLogSong(artist,album,song,isrot):
     print("Is Rotation: " + str(isrot))
 
     base_url = "http://kjhk.org/web/gravityformsapi/" 
-    api_key = 'REDACTED'
-    private_key = 'REDACTED'
+
+    #api_key = 
+    #private_key = 
     method = 'POST'
     route = 'entries'
     expires =  str(calendar.timegm(time.gmtime()) + 60*60)

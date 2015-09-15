@@ -7,8 +7,9 @@ def handleBurst(serv):
         print("bout to say accept..")
         (conn,addr) = serv.accept()
         print("connection accepted")
-        dat = conn.recv(BUFSIZE).decode('UTF-8')
+        dat = conn.recv(BUFSIZE).decode('UTF-8', 'ignore')
         print("data received!!!")
+        dat = dat.encode('cp850', errors='replace').decode('cp850')
         print(dat)
         print("calling music logger..")
         mlog.handleDataBurst(dat)
@@ -28,6 +29,7 @@ BUFSIZE = 8192    #this is probably much larger than neccessary.
 serv = socket( AF_INET,SOCK_STREAM)    
 
 ##bind our socket to the address
+#serv.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 serv.bind((ADDR))    #the double parens are to create a tuple with one element
 serv.listen(5)    #5 is the maximum number of queued connections we'll allow
 print("listening..")
