@@ -52,8 +52,9 @@ def handleLogSong(artist,album,song,isrot):
 
     base_url = "http://kjhk.org/web/gravityformsapi/" 
 
-    #api_key = 
-    #private_key = 
+    api_key = '4ed8897408'
+    private_key = '027f5a434083fb4'
+    
     method = 'POST'
     route = 'entries'
     expires =  str(calendar.timegm(time.gmtime()) + 60*60)
