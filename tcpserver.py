@@ -3,6 +3,7 @@ from socket import *      #import the socket library
 import KJHKMusicLogger as mlog
 import emailSender as es
 import sys
+import traceback as tb
 
 def handleBurst(serv):
     while True:
@@ -11,32 +12,43 @@ def handleBurst(serv):
         print("connection accepted")
         dat = conn.recv(BUFSIZE).decode('UTF-8', 'ignore')
         print("data received!!!")
-        dat = dat.encode('cp850', errors='replace').decode('cp850').encode("utf-8")
+        dat = dat.encode('cp850', errors='replace').decode('cp850').encode("utf-8", errors='replace').decode("utf-8")
+        recips =["pauliankline@gmail.com","it@kjhk.org"]
         try:
             print(dat)
         except:
-            recips =["pauliankline@gmail.com","it@kjhk.org"]
-            e=sys.exc_info()[0]
+            
+            e =str(sys.exc_info()[0])
+            v = str(sys.exc_info()[1])
+            t = str(tb.extract_tb(sys.exc_info()[2]))
+            error1 = "ERROR:\n" + e + "\n\nVALUE:\n" + v + "\n\nTRACEBACK:\n" + t 
             print("calling music logger..")
             try:
                 mlog.handleDataBurst(dat)
             except:
                 sub="Failed to print and failed to log"
-                e2=sys.exc_info()[0]
-                bod="print error:\n" + e + "\n" + "log error:\n" + e2
+                e2 =str(sys.exc_info()[0])
+                v2 = str(sys.exc_info()[1])
+                t2 = str(tb.extract_tb(sys.exc_info()[2]))
+                error2 = "ERROR:\n" + e2 + "\n\nVALUE:\n" + v2 + "\n\nTRACEBACK:\n" + t2
+                bod="print error:\n" + error1 + "\n" + "log error:\n" + error2
                 es.sendEmail(recips,sub,bod)
             else:
                 # if we s succeeded in logging, but there was a print error
                 sub ="Error printing but logging song raised no exceptions"
-                bod="print error: \n" + e
+                bod="print error: \n" + error1
+                bod += "\n dat=\n" + dat
                 es.sendEmail(recips,sub,bod)
         else:
             try:
                 mlog.handleDataBurst(dat)
             except:
                 sub="success printing, but logging threw an exception"
-                e3=sys.exc_info()[0]
-                bod="dat=\n" + dat +"\n\n Error logging:\n" + e3
+                e3 =str(sys.exc_info()[0])
+                v3 = str(sys.exc_info()[1])
+                t3 = str(tb.extract_tb(sys.exc_info()[2]))
+                error3 = "ERROR:\n" + e3 + "\n\nVALUE:\n" + v3 + "\n\nTRACEBACK:\n" + t3 
+                bod="dat=\n" + dat +"\n\n Error logging:\n" + error3
                 es.sendEmail(recips,sub,bod)
 
         conn.close()

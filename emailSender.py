@@ -23,6 +23,6 @@ def sendEmail(recips=["pauliankline@gmail.com"],sub="Error in music logger",bod=
     # Send the email via our own SMTP server.
     s = smtplib.SMTP('smtp.gmail.com', 587)
     s.starttls()
-    s.login('kjhkmusiclogger@gmail.com','REDACTED')
+    s.login('kjhkmusiclogger@gmail.com','EMAIL')
     s.sendmail(me, family, msg.as_string())
     s.quit()# Import smtplib for the actual sending function

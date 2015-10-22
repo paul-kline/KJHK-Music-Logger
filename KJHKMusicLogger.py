@@ -20,10 +20,11 @@ def handleDataBurst(str):
         return -1
     tree = maybetree
     if xmlp.didAir(tree):
-      (artist,album,song,airtime,duration,isrot) = xmlp.getSongData(tree)
+      
       #maybe keep track of air gaps.
       #  
       if xmlp.isSong(tree):
+        (artist,album,song,airtime,duration,isrot) = xmlp.getSongData(tree)
         artist = nf.filterNaughty(artist)
         album = nf.filterNaughty(album)
         song = nf.filterNaughty(song)
@@ -43,17 +44,18 @@ def testGET():
     print(responseData)
 
 def handleLogSong(artist,album,song,isrot):
-    #TODO logging to site..
-    print("handleLogSong stub method.")
-    print("Song: " + song )
-    print("Album: " + album)
-    print("Artist: " + artist)
-    print("Is Rotation: " + str(isrot))
-
+    try:
+        print("handleLogSong stub method.")
+        print("Song: " + song )
+        print("Album: " + album)
+        print("Artist: " + artist)
+        print("Is Rotation: " + str(isrot))
+    except:
+        print("\n\nFAILED TO PRINT SONG INFO IN HANDLELOGSONG\n\n")
     base_url = "http://kjhk.org/web/gravityformsapi/" 
 
-    api_key = '4ed8897408'
-    private_key = '027f5a434083fb4'
+    api_key = 'PUB'
+    private_key = 'PRIV'
     
     method = 'POST'
     route = 'entries'

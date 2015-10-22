@@ -21,7 +21,7 @@ def preparse(str):
     str = re.sub("<Track Number>(.*?)</Track Number>","",str)
     str = re.sub("&", "&amp;",str)
     #specifically replace instances of '<' and '>' that show up in titles.
-    #without doing this parsing the xml will fail.
+    #without doing this parsing the xml will fail if those chars are there.
     str = re.sub("<artist>(.*?)>(.*?)</artist>","<artist>\\1&gt;\\2</artist>",str)
     str = re.sub("<artist>(.*?)<(.*?)</artist>","<artist>\\1&lt;\\2</artist>",str)
     str = re.sub("<trivia>(.*?)>(.*?)</trivia>","<trivia>\\1&gt;\\2</trivia>",str)
@@ -74,7 +74,23 @@ def handleNone(x):
     else:
         return x
 def handleMissingData(x):
-    (band,album,song,airtime,duration,isrot) = x 
+    (band,album,song,airtime,duration,isrot) = x
+    sub = "Automated msg: Missing Song Data"
+    bod = "The following song information appears to have missing data in WideOrbit:\n"
+    bod += "Song:\t" + song + "\n"
+    bod += "Album:\t" + album + "\n"
+    bod += "Artist:\t" + band + "\n"
+    bod += "\n\nThis message was send automatically by the KJHK music logger. "
+    bod += "Please contact Paul Kline (pauliankline@gmail.com) or John McCain "
+    bod += "(it@kjhk.org) to edit whom receives this email or to report 'false alarms'."
+    recips=["pauliankline@gmail.com", "music@kjhk.org", "musicassistant@kjhk.org"]        
+    try:
+        sendEmail(recips,sub,bod)
+        print("successfully reported missing song data.")
+    except:
+        print("error sending email!!!")
+        
+        
     print("HANDLING MISSING DATA") 
 def toSeconds(mill):
     return mill / 1000
