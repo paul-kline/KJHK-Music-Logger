@@ -10,6 +10,7 @@ import urllib.parse
 import urllib.request
 import calendar
 import time
+import acorns as s
 #KJHK music auto-logger
 
 
@@ -54,8 +55,8 @@ def handleLogSong(artist,album,song,isrot):
         print("\n\nFAILED TO PRINT SONG INFO IN HANDLELOGSONG\n\n")
     base_url = "http://kjhk.org/web/gravityformsapi/" 
 
-    api_key = 'PUB'
-    private_key = 'PRIV'
+    api_key = s.secrets['api']
+    private_key = s.secrets['priv']
     
     method = 'POST'
     route = 'entries'

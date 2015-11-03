@@ -3,17 +3,57 @@ from socket import *      #import the socket library
 import KJHKMusicLogger as mlog
 import emailSender as es
 import sys
+import time as t 
 import traceback as tb
 
 def handleBurst(serv):
+    recips =["pauliankline@gmail.com","it@kjhk.org"]
+    connfailures = 0
+    emailMeAtMost = 60* 10 # 10 min in seconds
+    lastEmailTime = 0
     while True:
-        print("bout to say accept..")
-        (conn,addr) = serv.accept()
-        print("connection accepted")
-        dat = conn.recv(BUFSIZE).decode('UTF-8', 'ignore')
-        print("data received!!!")
-        dat = dat.encode('cp850', errors='replace').decode('cp850').encode("utf-8", errors='replace').decode("utf-8")
-        recips =["pauliankline@gmail.com","it@kjhk.org"]
+        try:
+            print("bout to say accept..")
+            (conn,addr) = serv.accept()
+            print("connection accepted")
+            dat = conn.recv(BUFSIZE).decode('UTF-8', 'ignore')
+            print("data received!!!")
+            dat = dat.encode('cp850', errors='replace').decode('cp850').encode("utf-8", errors='replace').decode("utf-8")
+            connfailures = 0
+        except KeyboardInterrupt:
+            print("You have entered a keyboard interrupt. exiting.")
+            conn.close()
+            sys.exit(0)
+            quit()
+        except:
+            connfailures += 1 
+            mydelay = 30 #seconds
+            e0 =str(sys.exc_info()[0])
+            v0 = str(sys.exc_info()[1])
+            t0 = str(tb.extract_tb(sys.exc_info()[2]))
+            error0 = "ERROR:\n" + e0 + "\n\nVALUE:\n" + v0 + "\n\nTRACEBACK:\n" + t0 
+            sub ="Connection to Device Server Error"
+            bod="Error: \n" + error0
+            
+            try:
+                conn.close()
+                print("Connection closed!")
+                connectionStatus = "successfully closed connection"
+            except:
+                connectionStatus = "failed to close connection:\n"
+                connectionStatus+= str(sys.exc_info()[0])
+                connectionStatus+= "\n" + str(sys.exc_info()[1])
+
+            bod += "\n\n" + connectionStatus
+            bod += "\n conn failures since last success: " + str(connfailures)
+            bod += "\n Attempt reconnect in: " + str(mydelay) + " seconds."
+            if ((t.time() - lastEmailTime) > emailMeAtMost):
+                es.sendEmail(recips,sub,bod)
+                lastEmailTime = t.time()
+            t.sleep(mydelay)
+            continue
+                
+            
         try:
             print(dat)
         except:
