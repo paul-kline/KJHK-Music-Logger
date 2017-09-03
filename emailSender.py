@@ -1,6 +1,6 @@
 # Import smtplib for the actual sending function
 import smtplib
-import acorns as s 
+import acorns as sa
 # Here are the email package modules we'll need
 from email.mime.text import MIMEText
 
@@ -23,7 +23,7 @@ def sendEmail(recips=["pauliankline@gmail.com"],sub="Error in music logger",bod=
         # Send the email via our own SMTP server.
         s = smtplib.SMTP('smtp.gmail.com', 587)
         s.starttls()
-        s.login('kjhkmusiclogger@gmail.com', s.secrets['kj'])
+        s.login('kjhkmusiclogger@gmail.com', sa.secrets['kj'])
         s.sendmail(me, family, msg.as_string())
         s.quit()# Import smtplib for the actual sending function
     except:

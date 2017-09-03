@@ -3,23 +3,35 @@ from socket import *      #import the socket library
 import KJHKMusicLogger as mlog
 import emailSender as es
 import sys
-import time as t 
+import time as tm 
 import traceback as tb
-
+import eventlet.timeout as evlet
+import subprocess
 def handleBurst(serv):
-    recips =["pauliankline@gmail.com","it@kjhk.org"]
+    recips =["technologyassist@kjhk.org","it@kjhk.org"]
     connfailures = 0
     emailMeAtMost = 60* 10 # 10 min in seconds
     lastEmailTime = 0
     while True:
+        timeout = evlet.Timeout(30)
         try:
-            print("bout to say accept..")
+            print("bout to say accept..")            
             (conn,addr) = serv.accept()
+            timeout.cancel();
             print("connection accepted")
             dat = conn.recv(BUFSIZE).decode('UTF-8', 'ignore')
             print("data received!!!")
             dat = dat.encode('cp850', errors='replace').decode('cp850').encode("utf-8", errors='replace').decode("utf-8")
             connfailures = 0
+        except Timeout as t:
+                sub = "Potential DS failure"
+                bod = "The following timeout error was thrown:\n" + str(t)
+                bod += "\nI am attempting to restart the device server."
+                filepath ="C:/Users/WOAFR/Desktop/KJHK_SCRIPTS/restartDeviceServer.bat"
+                p = subprocess.Popen(filepath, shell=True, stdout = subprocess.PIPE)
+                stdout, stderr = p.communicate()
+                print(p.returncode)
+                es.sendEmail(recips,sub,bod)
         except KeyboardInterrupt:
             print("You have entered a keyboard interrupt. exiting.")
             conn.close()
@@ -47,13 +59,16 @@ def handleBurst(serv):
             bod += "\n\n" + connectionStatus
             bod += "\n conn failures since last success: " + str(connfailures)
             bod += "\n Attempt reconnect in: " + str(mydelay) + " seconds."
-            if ((t.time() - lastEmailTime) > emailMeAtMost):
+            global tm
+            if ((tm.time() - lastEmailTime) > emailMeAtMost):
                 es.sendEmail(recips,sub,bod)
-                lastEmailTime = t.time()
-            t.sleep(mydelay)
+                lastEmailTime = tm.time()
+            tm.sleep(mydelay)
             continue
-                
-            
+        
+        finally:
+            timeout.cancel();
+
         try:
             print(dat)
         except:
@@ -74,11 +89,12 @@ def handleBurst(serv):
                 bod="print error:\n" + error1 + "\n" + "log error:\n" + error2
                 es.sendEmail(recips,sub,bod)
             else:
+                print("used to be email codehere")
                 # if we s succeeded in logging, but there was a print error
-                sub ="Error printing but logging song raised no exceptions"
-                bod="print error: \n" + error1
-                bod += "\n dat=\n" + dat
-                es.sendEmail(recips,sub,bod)
+                #sub ="Error printing but logging song raised no exceptions"
+                #bod="print error: \n" + error1
+                #bod += "\n dat=\n" + dat
+                #es.sendEmail(recips,sub,bod)
         else:
             try:
                 mlog.handleDataBurst(dat)

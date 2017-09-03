@@ -38,7 +38,7 @@ def tryParseXML(str):
      print("nooooooo parse failure")
      return -1
 
-nonsongCategories = ["DON", "RTR", "EVR", "PRO", "PSA", "IDS", "VTK", "DIS"]
+nonsongCategories = ["DON", "RTR", "EVR", "PRO", "PSA", "IDS", "VTK", "DIS", "EVT", "LIN"]
 def isSong(tree):
     #assumed successful tree parse.
     category = getCategory(tree)
@@ -81,7 +81,7 @@ def handleMissingData(x):
     bod += "Album:\t" + album + "\n"
     bod += "Artist:\t" + band + "\n"
     bod += "\n\nThis message was send automatically by the KJHK music logger. "
-    bod += "Please contact Paul Kline (pauliankline@gmail.com) or John McCain "
+    bod += "Please contact Paul Kline (pauliankline@gmail.com) or Erick Oduniyi "
     bod += "(it@kjhk.org) to edit whom receives this email or to report 'false alarms'."
     recips=["pauliankline@gmail.com", "music@kjhk.org", "musicassistant@kjhk.org"]        
     try:
